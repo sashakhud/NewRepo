@@ -13,14 +13,15 @@ namespace WebApplication1.Repositories
             _context = context;
         }
 
-        public async Task<List<Product>> GetProductByOrderAsync(int OrderId)
+        public async Task<List<Product>> GetProductByOrderAsync(int orderId)
         {
-            var products = from product in _context.Products
+            return await _context.Products.Where(product => product.OrderDetails.Any(od => od.OrderId == orderId)).ToListAsync();
+            /*var products = from product in _context.Products
                            join detail in _context.Details on product.Id equals detail.ProductId
                            join order in _context.Orders on detail.OrderId equals order.Id
                            where order.Id == OrderId
                            select product;
-            return await products.ToListAsync();
+            return await products.ToListAsync();*/
         }
 
         public async Task<Order> GetAsync(int id)

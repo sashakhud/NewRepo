@@ -118,7 +118,7 @@ namespace WebApplication1.Services
                 return Result.Fail("Email is used");
             }
 
-            var newUser = new AppUser() { Email = request.Email, UserName = request.Username };
+            var newUser = new AppUser() { Email = request.Email, UserName = request.Username, Name = request.Name, Address = request.Address };
             var isCreated = await _userManager.CreateAsync(newUser, request.Password);
             if (isCreated.Succeeded)
             {

@@ -33,13 +33,15 @@ namespace WebApplication1.Repositories
             return await _context.Products.OrderBy(i => i.Id).ToListAsync();
         }
 
-        public async Task<List<Order>> GetOrderByProductAsync(int ProductId)
+        public async Task<List<Order>> GetOrderByProductAsync(int productId)
         {
-            var orders = from order in _context.Orders
+            return await _context.Orders.Where(order => order.Details.Any(od => od.ProductId == productId)).ToListAsync();
+            /*var orders = from order in _context.Orders
                          join detail in _context.Details on order.Id equals detail.OrderId
                          where detail.ProductId == ProductId
                          select order;
             return await orders.ToListAsync();
+            */
         }
 
         public async Task<bool> ExistsAsync(int Id)

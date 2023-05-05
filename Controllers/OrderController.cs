@@ -45,10 +45,10 @@ namespace WebApplication1.Controllers
         }
 
 
-        [HttpPost("customerId")]
-        public async Task<IResult> CreateAsync([FromQuery] string customerId, [FromBody] OrderDto orderCreate)
+        [HttpPost]
+        public async Task<IResult> CreateAsync([FromQuery] string appUserId, [FromBody] OrderDto orderCreate)
         {
-            return await _orderService.CreateAsync(customerId, orderCreate);
+            return await _orderService.CreateAsync(appUserId, orderCreate);
         }
 
         [HttpPut("{orderId}")]
