@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication1.Interfaces;
+using WebApplication1.Contracts.Repositories;
 using WebApplication1.Models;
 
 namespace WebApplication1.Repositories
@@ -61,6 +61,13 @@ namespace WebApplication1.Repositories
 
         public async Task<int> DeleteAsync(Product product)
         {
+            _context.Products.Remove(product);
+            return await _context.SaveChangesAsync();
+        }
+        public async Task<int> DeleteByIdAsync(int id)
+        {
+            var product = await _context.Products
+                .FirstOrDefaultAsync(p => p.Id == id);
             _context.Products.Remove(product);
             return await _context.SaveChangesAsync();
         }

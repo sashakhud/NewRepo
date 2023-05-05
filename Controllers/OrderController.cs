@@ -1,11 +1,7 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Configuration;
+using WebApplication1.Contracts.Services;
 using WebApplication1.Dto;
-using WebApplication1.Interfaces;
-using WebApplication1.InterfaceServices;
-using WebApplication1.Models;
-using WebApplication1.Services;
 using IResult = WebApplication1.Configuration.IResult;
 
 namespace WebApplication1.Controllers
@@ -29,48 +25,42 @@ namespace WebApplication1.Controllers
         }
 
 
-        [HttpGet("/GetOrder/{OrderId}")]
-        public async Task<IResult<OrderDto>> GetAsync(int OrderId)
+        [HttpGet("{orderId}")]
+        public async Task<IResult<OrderDto>> GetAsync(int orderId)
         {
-            return await _orderService.GetAsync(OrderId);
+            return await _orderService.GetAsync(orderId);
         }
 
 
-        [HttpGet("/GetItemsInOrder/{OrderId}")]
-        public async Task<IResult<List<ProductDto>>> GetProductsByOrderAsync(int OrderId)
+        [HttpGet("/GetItemsInOrder/{orderId}")]
+        public async Task<IResult<List<ProductDto>>> GetProductsByOrderAsync(int orderId)
         {
-            return await _orderService.GetProductsByOrder(OrderId);
+            return await _orderService.GetProductsByOrder(orderId);
         }
 
-        [HttpGet("/CheckOrder/{OrderId}")]
-        public async Task<IResult<bool>> ExistsAsync(int OrderId)
+        [HttpGet("/CheckOrder/{orderId}")]
+        public async Task<IResult<bool>> ExistsAsync(int orderId)
         {
-            return await _orderService.ExistsAsync(OrderId);
-        }
-
-        [HttpGet("/GetOrderDetails/{OrderId}")]
-        public async Task<IResult<List<OrderDetailDto>>> GetOrderDetailsAsync(int OrderId)
-        {
-            return await _orderService.GetOrderDetailsAsync(OrderId);
+            return await _orderService.ExistsAsync(orderId);
         }
 
 
-        [HttpPost]
+        [HttpPost("customerId")]
         public async Task<IResult> CreateAsync([FromQuery] string customerId, [FromBody] OrderDto orderCreate)
         {
             return await _orderService.CreateAsync(customerId, orderCreate);
         }
 
-        [HttpPut("/UpdateOrder/{OrderId}")]
-        public async Task<IResult> UpdateAsync([FromQuery] int OrderId, [FromQuery] string CustomerId, OrderDto UpdatedOrder)
+        [HttpPut("{orderId}")]
+        public async Task<IResult> UpdateAsync([FromQuery] int orderId, [FromQuery] string customerId, OrderDto updatedOrder)
         {
-            return await _orderService.UpdateAsync(OrderId, CustomerId, UpdatedOrder);
+            return await _orderService.UpdateAsync(orderId, customerId, updatedOrder);
         }
 
-        [HttpDelete("/DeleteOrder/{OrderId}")]
-        public async Task<IResult> DeleteAsync(int OrderId)
+        [HttpDelete("{orderId}")]
+        public async Task<IResult> DeleteAsync(int orderId)
         {
-            return await _orderService.DeleteAsync(OrderId);
+            return await _orderService.DeleteAsync(orderId);
         }
     }
 }

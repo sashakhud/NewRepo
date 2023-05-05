@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication1.Interfaces;
+using WebApplication1.Contracts.Repositories;
 using WebApplication1.Models;
 
 namespace WebApplication1.Repositories
@@ -16,20 +16,11 @@ namespace WebApplication1.Repositories
         public async Task<List<Product>> GetProductByOrderAsync(int OrderId)
         {
             var products = from product in _context.Products
-                        join detail in _context.Details on product.Id equals detail.ProductId
-                        join order in _context.Orders on detail.OrderId equals order.Id
-                        where order.Id == OrderId
-                        select product;
+                           join detail in _context.Details on product.Id equals detail.ProductId
+                           join order in _context.Orders on detail.OrderId equals order.Id
+                           where order.Id == OrderId
+                           select product;
             return await products.ToListAsync();
-        }
-
-        public async Task<List<OrderDetail>> GetOrderDetailsAsync(int OrderId)
-        {
-            var details = from detail in _context.Details
-                          join order in _context.Orders on detail.OrderId equals order.Id
-                          where order.Id == OrderId
-                          select detail;
-            return await details.ToListAsync();
         }
 
         public async Task<Order> GetAsync(int id)
@@ -64,6 +55,14 @@ namespace WebApplication1.Repositories
         public async Task<int> DeleteAsync(Order Order)
         {
             _context.Orders.Remove(Order);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteByIdAsync(int id)
+        {
+            var order = await _context.Orders
+                .FirstOrDefaultAsync(o => o.Id == id);
+            _context.Orders.Remove(order);
             return await _context.SaveChangesAsync();
         }
     }

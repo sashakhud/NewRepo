@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Configuration;
+using WebApplication1.Contracts.Services;
 using WebApplication1.Dto;
-using WebApplication1.Interfaces;
-using WebApplication1.InterfaceServices;
-using WebApplication1.Models;
 using IResult = WebApplication1.Configuration.IResult;
 
 namespace WebApplication1.Controllers
@@ -26,24 +24,24 @@ namespace WebApplication1.Controllers
             return await _customerService.GetAllAsync();
         }
 
-        [HttpGet("/GetOrdersByAppUser/{AppUserId}")]
-        public async Task<IResult<List<OrderDto>>> GetOrderByCustomerAsync(string AppUserId)
+        [HttpGet("/GetOrdersByAppUser/{appUserId}")]
+        public async Task<IResult<List<OrderDto>>> GetOrderByCustomerAsync(string appUserId)
         {
-            return await _customerService.GetOrderByCustomerAsync(AppUserId);
+            return await _customerService.GetOrderByCustomerAsync(appUserId);
         }
 
 
 
-        [HttpGet("/GetAppUser/{AppUserId}")]
-        public async Task<IResult<AppUserDto>> GetAsync(string AppUserId)
+        [HttpGet("/GetAppUser/{appUserId}")]
+        public async Task<IResult<AppUserDto>> GetAsync(string appUserId)
         {
-            return await _customerService.GetAsync(AppUserId);
+            return await _customerService.GetAsync(appUserId);
         }
 
-        [HttpGet("/CheckAppUser/{AppUserId}")]
-        public async Task<IResult<bool>> ExistsAsync(string AppUserId)
+        [HttpGet("{appUserId}")]
+        public async Task<IResult<bool>> ExistsAsync(string appUserId)
         {
-            return await _customerService.ExistsAsync(AppUserId);
+            return await _customerService.ExistsAsync(appUserId);
         }
 
 
@@ -53,17 +51,17 @@ namespace WebApplication1.Controllers
             return await _customerService.CreateAsync(customerCreate);
         }
 
-        [HttpPut("/UpdateAppUser/{AppUserId}")]
+        [HttpPut("{appUserId}")]
 
-        public async Task<IResult> UpdateAsync([FromQuery] string AppUserId, [FromBody] AppUserDto updatedCustomer)
+        public async Task<IResult> UpdateAsync([FromQuery] string appUserId, [FromBody] AppUserDto updatedCustomer)
         {
-            return await _customerService.UpdateAsync(AppUserId, updatedCustomer);
+            return await _customerService.UpdateAsync(appUserId, updatedCustomer);
         }
 
-        [HttpDelete("/DeleteAppUser/{AppUserId}")]
-        public async Task<IResult> DeleteAsync(string AppUserId)
+        [HttpDelete("{appUserId}")]
+        public async Task<IResult> DeleteAsync(string appUserId)
         {
-            return await _customerService.DeleteAsync(AppUserId);
+            return await _customerService.DeleteAsync(appUserId);
         }
 
 

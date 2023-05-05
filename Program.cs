@@ -1,9 +1,5 @@
-using WebApplication1.Interfaces;
-using WebApplication1.Repositories;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
-using WebApplication1.InterfaceServices;
-using WebApplication1.Services;
 using Mapster;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +9,10 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using WebApplication1.Configuration;
 using WebApplication1.Dto;
+using WebApplication1.Repositories;
+using WebApplication1.Services;
+using WebApplication1.Contracts.Repositories;
+using WebApplication1.Contracts.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
@@ -59,7 +57,7 @@ builder.Services.AddDbContext<Context>(opt =>
 // Add services to the container.
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 builder.Services
-.AddIdentity<IdentityUser, IdentityRole>()
+.AddIdentity<AppUser, IdentityRole>()
 .AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 
 

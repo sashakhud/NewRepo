@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Configuration;
+﻿using WebApplication1.Configuration;
 using WebApplication1.Dto;
-using WebApplication1.Models;
 using IResult = WebApplication1.Configuration.IResult;
 
-namespace WebApplication1.InterfaceServices
+namespace WebApplication1.Contracts.Services
 {
     public interface IAppUserService
     {

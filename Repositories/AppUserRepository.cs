@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using WebApplication1.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplication1.Contracts.Repositories;
 using WebApplication1.Models;
 
 namespace WebApplication1.Repositories
@@ -8,7 +7,6 @@ namespace WebApplication1.Repositories
     public class AppUserRepository : IAppUserRepository
     {
         private readonly Context _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
         public AppUserRepository(Context context)
         {
@@ -51,6 +49,14 @@ namespace WebApplication1.Repositories
         public async Task<int> DeleteAsync(AppUser customer)
         {
             _context.AppUsers.Remove(customer);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteByIdAsync(string id)
+        {
+            var appUser = await _context.AppUsers
+                .FirstOrDefaultAsync(a => a.Id == id);
+            _context.AppUsers.Remove(appUser);
             return await _context.SaveChangesAsync();
         }
     }

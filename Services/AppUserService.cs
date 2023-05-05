@@ -7,9 +7,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebApplication1.Configuration;
+using WebApplication1.Contracts.Repositories;
+using WebApplication1.Contracts.Services;
 using WebApplication1.Dto;
-using WebApplication1.Interfaces;
-using WebApplication1.InterfaceServices;
 using WebApplication1.Models;
 using IResult = WebApplication1.Configuration.IResult;
 
@@ -19,9 +19,9 @@ namespace WebApplication1.Services
     {
         private readonly IAppUserRepository _customerRepository;
         private readonly JwtConfig _jwtConfig;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         public AppUserService(IAppUserRepository customerRepository, IOptions<JwtConfig> jwtOptions,
-                                        UserManager<IdentityUser> userManager)
+                                        UserManager<AppUser> userManager)
         {
             _customerRepository = customerRepository;
             _jwtConfig = jwtOptions.Value;
@@ -46,8 +46,7 @@ namespace WebApplication1.Services
         {
             try
             {
-                var customerToDelete = await _customerRepository.GetAsync(customerId);
-                var delete = await _customerRepository.DeleteAsync(customerToDelete);
+                var delete = await _customerRepository.DeleteByIdAsync(customerId);
                 return Result<int>.Success(delete);
             }
             catch (Exception ex)
@@ -119,7 +118,7 @@ namespace WebApplication1.Services
                 return Result.Fail("Email is used");
             }
 
-            var newUser = new IdentityUser() { Email = request.Email, UserName = request.Username };
+            var newUser = new AppUser() { Email = request.Email, UserName = request.Username };
             var isCreated = await _userManager.CreateAsync(newUser, request.Password);
             if (isCreated.Succeeded)
             {
@@ -145,7 +144,7 @@ namespace WebApplication1.Services
             if (!isCorrect)
             {
                 return Result<string>.Fail("");
-                }
+            }
 
             var jwtToken = GenerateJwtToken(existingUser);
 

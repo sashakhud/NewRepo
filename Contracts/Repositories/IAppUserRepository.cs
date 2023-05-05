@@ -1,6 +1,6 @@
 ﻿using WebApplication1.Models;
 
-namespace WebApplication1.Interfaces
+namespace WebApplication1.Contracts.Repositories
 {
     public interface IAppUserRepository
     {
@@ -15,6 +15,8 @@ namespace WebApplication1.Interfaces
         Task<int> UpdateAsync(AppUser customer);
 
         Task<int> DeleteAsync(AppUser customer);
+
+        Task<int> DeleteByIdAsync(string id);
 
         Task<bool> ExistsAsync(string id);
     }

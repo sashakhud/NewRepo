@@ -1,12 +1,10 @@
 ﻿using WebApplication1.Models;
 
-namespace WebApplication1.Interfaces
+namespace WebApplication1.Contracts.Repositories
 {
     public interface IOrderRepository
     {
         Task<List<Order>> GetAllAsync();
-
-        Task<List<OrderDetail>> GetOrderDetailsAsync(int id);
 
         Task<Order> GetAsync(int id);
 
@@ -17,6 +15,7 @@ namespace WebApplication1.Interfaces
         Task<int> UpdateAsync(string CustomerId, Order order);
 
         Task<int> DeleteAsync(Order Order);
+        Task<int> DeleteByIdAsync(int id);
 
         Task<List<Product>> GetProductByOrderAsync(int OrderId);
     }

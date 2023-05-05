@@ -1,11 +1,10 @@
 ﻿using Mapster;
 using MapsterMapper;
 using WebApplication1.Configuration;
+using WebApplication1.Contracts.Repositories;
+using WebApplication1.Contracts.Services;
 using WebApplication1.Dto;
-using WebApplication1.Interfaces;
-using WebApplication1.InterfaceServices;
 using WebApplication1.Models;
-using WebApplication1.Repositories;
 using IResult = WebApplication1.Configuration.IResult;
 
 namespace WebApplication1.Services
@@ -49,26 +48,12 @@ namespace WebApplication1.Services
         {
             try
             {
-                var OrderToDelete = await _orderRepository.GetAsync(OrderId);
-                var delete = await _orderRepository.DeleteAsync(OrderToDelete);
+                var delete = await _orderRepository.DeleteByIdAsync(OrderId);
                 return Result<int>.Success(delete);
             }
             catch (Exception ex)
             {
                 return Result<int>.Fail(ex.Message);
-            }
-        }
-
-        public async Task<IResult<List<OrderDetailDto>>> GetOrderDetailsAsync(int OrderId)
-        {
-            try
-            {
-                var details = await _orderRepository.GetOrderDetailsAsync(OrderId);
-                return Result<List<OrderDetailDto>>.Success(details.Adapt<List<OrderDetailDto>>());
-            }
-            catch (Exception ex)
-            {
-                return Result<List<OrderDetailDto>>.Fail(ex.Message);
             }
         }
 
