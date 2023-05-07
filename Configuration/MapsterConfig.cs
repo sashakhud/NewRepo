@@ -16,9 +16,7 @@ namespace WebApplication1.Configuration
                 .Map(quantity => quantity.QuantityInStorage, src => src.QuantityInStorage);
             config.NewConfig<OrderDetail, OrderDetailDto>()
                 .Map(quantity => quantity.Quantity, src => src.Quantity);
-            config.NewConfig<Order, OrderDto>()
-                .Map(status => status.Status, src => src.Status)
-                .Map(total => total.Total, src => src.Total);
+            config.NewConfig<Order, OrderDto>();
             config.NewConfig<AppUser, AppUserDto>()
                 .Map(name => name.Name, src => src.Name)
                 .Map(address => address.Address, src => src.Address);

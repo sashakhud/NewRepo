@@ -26,7 +26,7 @@ namespace WebApplication1.Repositories
 
         public async Task<Order> GetAsync(int id)
         {
-            return await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
+            return await _context.Orders.Include(x => x.Details).FirstOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<List<Order>> GetAllAsync()

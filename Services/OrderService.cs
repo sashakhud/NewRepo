@@ -35,7 +35,14 @@ namespace WebApplication1.Services
         {
             try
             {
-                var create = await _orderRepository.CreateAsync(customerId, orderCreate.Adapt<Order>());
+                
+                var listOrderDetails = orderCreate.OrderDetails.Select(odr => new OrderDetail
+                {
+                    ProductId = odr.ProductId,
+                    Quantity = odr.Quantity
+                });
+                var newCreate = new Order() { Id = orderCreate.Id, Details = listOrderDetails.ToArray()};
+                var create = await _orderRepository.CreateAsync(customerId, newCreate);
                 return Result<int>.Success(create);
             }
             catch (Exception ex)
